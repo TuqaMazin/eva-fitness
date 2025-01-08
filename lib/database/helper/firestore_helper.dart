@@ -28,9 +28,6 @@ class FirestoreHelper {
   String updatedAt = "UpdatedAt";
   String lastSync = "LastSync";
   String lastDayCompleteLoseWeight = "LastDayCompleteLoseWeight";
-  String lastDayCompleteButtLift = "LastDayCompleteButtLift";
-  String lastDayCompleteLoseBelly = "LastDayCompleteLoseBelly";
-  String lastDayCompleteBuildMuscle = "LastDayCompleteBuildMuscle";
 
   final HomeController _homeController = Get.find<HomeController>();
   final MeController _meController = Get.find<MeController>();
@@ -111,9 +108,6 @@ class FirestoreHelper {
           createdAt: Timestamp.now(),
           updatedAt: Timestamp.now(),
           lastDayCompleteLoseWeight: Utils.getLastCompletedDay(1),
-          lastDayCompleteButtLift: Utils.getLastCompletedDay(2),
-          lastDayCompleteLoseBelly: Utils.getLastCompletedDay(3),
-          lastDayCompleteBuildMuscle: Utils.getLastCompletedDay(4),
         }).then((value) {
           Debug.printLog("User Added Success");
           sync();
@@ -172,18 +166,6 @@ class FirestoreHelper {
           Utils.getResetCompletedDay(1) ||
           Utils.getResetCompletedAllEx())
         lastDayCompleteLoseWeight: Utils.getLastCompletedDay(1),
-      if (Utils.getLastCompletedDay(2) > data[lastDayCompleteButtLift] ||
-          Utils.getResetCompletedDay(2) ||
-          Utils.getResetCompletedAllEx())
-        lastDayCompleteButtLift: Utils.getLastCompletedDay(2),
-      if (Utils.getLastCompletedDay(3) > data[lastDayCompleteLoseBelly] ||
-          Utils.getResetCompletedDay(3) ||
-          Utils.getResetCompletedAllEx())
-        lastDayCompleteLoseBelly: Utils.getLastCompletedDay(3),
-      if (Utils.getLastCompletedDay(4) > data[lastDayCompleteBuildMuscle] ||
-          Utils.getResetCompletedDay(4) ||
-          Utils.getResetCompletedAllEx())
-        lastDayCompleteBuildMuscle: Utils.getLastCompletedDay(4),
     };
 
     await _getDataBaseTable(usersTable)
@@ -199,10 +181,6 @@ class FirestoreHelper {
     await _getDataBaseTable(usersTable).doc(Utils.getFirebaseUid()).get();
 
     Utils.setLastCompletedDay(1, (data[lastDayCompleteLoseWeight] - 1));
-    Utils.setLastCompletedDay(2, (data[lastDayCompleteButtLift] - 1));
-    Utils.setLastCompletedDay(3, (data[lastDayCompleteLoseBelly] - 1));
-    Utils.setLastCompletedDay(4, (data[lastDayCompleteBuildMuscle] - 1));
-
     await Preference.shared.clearResetCompletedDay();
   }
 

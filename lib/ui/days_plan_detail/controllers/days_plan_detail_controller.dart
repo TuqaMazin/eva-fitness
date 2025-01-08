@@ -58,7 +58,7 @@ class DaysPlanDetailController extends GetxController
   }
 
   _scrollListener() {
-    if (isShrink != lastStatus) {
+    if (isShrink != lastStatus) { //monitoring the state when the listener move
       lastStatus = isShrink;
       update([Constant.idDaysPlanDetailSliverAppBar]);
     }

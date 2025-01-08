@@ -48,7 +48,7 @@ class MyProfileScreen extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              "\t\t\t\t${"txtMyProfile".tr}",
+              "\t\t\t\t${"My Profile"}",
               textAlign: TextAlign.left,
               style: TextStyle(
                 color: AppColor.black,
@@ -70,11 +70,10 @@ class MyProfileScreen extends StatelessWidget {
           top: AppSizes.height_7),
       decoration: BoxDecoration(
         color: AppColor.white,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(15),
         border: Border.all(color: AppColor.primary, width: 0.5),
       ),
       child: GetBuilder<MyProfileController>(
-        id: Constant.idKgCmLbsFtSelection,
         builder: (logic) {
           return Row(
             children: [
@@ -87,9 +86,7 @@ class MyProfileScreen extends StatelessWidget {
                     padding:
                     EdgeInsets.symmetric(vertical: AppSizes.height_1_2),
                     decoration: BoxDecoration(
-                      color: logic.isKgCm
-                          ? AppColor.primary
-                          : AppColor.white,
+                      color: AppColor.primary,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(6),
                         bottomLeft: Radius.circular(6),
@@ -97,12 +94,11 @@ class MyProfileScreen extends StatelessWidget {
                       border: Border.all(color: AppColor.primary, width: 0.5),
                     ),
                     child: Text(
-                      "txtKgCm".tr,
+                      "Kg,Cm".tr,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: logic.isKgCm
-                            ? AppColor.white
-                            : AppColor.primary,
+                        color:
+                             AppColor.white,
                         fontSize: AppFontSize.size_11,
                         fontWeight: FontWeight.w700,
                       ),
@@ -123,7 +119,6 @@ class MyProfileScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(
             vertical: AppSizes.height_5, horizontal: AppSizes.width_7),
         child: GetBuilder<MyProfileController>(
-          id: Constant.idKgCmLbsFtSelection,
           builder: (logic) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,7 +128,7 @@ class MyProfileScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        "txtHeight".tr,
+                        "Height",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: AppColor.txtColor666,
@@ -174,7 +169,7 @@ class MyProfileScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        "txtWeight".tr,
+                        "Weight",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: AppColor.txtColor666,
@@ -215,7 +210,7 @@ class MyProfileScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        "txtTargetWeight".tr,
+                        "Target Weight",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: AppColor.txtColor666,

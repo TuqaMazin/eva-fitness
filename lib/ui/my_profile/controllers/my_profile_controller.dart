@@ -13,9 +13,9 @@ class MyProfileController extends GetxController {
   int weightUnitValue = Constant.valueZero;
   int targetWeightUnitValue = Constant.valueZero; // Ensure this is initialized
 
-  List<String> heightUnitList = ["txtCM".tr];
-  List<String> weightUnitList = ["txtKG".tr];
-  List<String> targetWeightUnitList = ["txtKG".tr]; // Ensure this contains the correct unit
+  List<String> heightUnitList = ["CM"];
+  List<String> weightUnitList = ["KG"];
+  List<String> targetWeightUnitList = ["KG"]; // Ensure this contains the correct unit
 
   String? heightInCM;
   String? weightInKG;
@@ -65,10 +65,7 @@ class MyProfileController extends GetxController {
   void getHeightPreferenceData() {
     heightCM = Preference.shared.getInt(Preference.currentHeightInCm) ?? Constant.heightCm;
 
-    Future.delayed(const Duration(milliseconds: 50), () async {
-      await fixedExtentScrollControllerCm!.animateToItem(heightCM - 20,
-          duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
-    });
+
   }
 
   void onChangeCMValue(int value) {
@@ -90,10 +87,6 @@ class MyProfileController extends GetxController {
   void getWeightPreferenceData() {
     weightKG = Preference.shared.getInt(Preference.currentWeightInKg) ?? Constant.weightKg;
 
-    Future.delayed(const Duration(milliseconds: 50), () {
-      fixedExtentScrollControllerWeight!.animateToItem(weightKG - 20,
-          duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
-    });
   }
 
   void onChangeKgValue(int value) {
@@ -155,10 +148,6 @@ class MyProfileController extends GetxController {
   void getTargetWeightPreferenceData() {
     targetWeightKG = Preference.shared.getInt(Preference.targetWeightInKg) ?? Constant.weightKg;
 
-    Future.delayed(const Duration(milliseconds: 50), () {
-      fixedExtentScrollControllerTargetWeight!.animateToItem(targetWeightKG - 20,
-          duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
-    });
   }
 
   void onChangeKgTargetValue(int value) {

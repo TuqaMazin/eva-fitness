@@ -36,7 +36,7 @@ class DialogHeight extends StatelessWidget {
                       right: AppSizes.width_5,
                       top: AppSizes.height_2_5),
                   child: Text(
-                    "txtHeight".tr,
+                    "Height",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: AppColor.black,
@@ -152,7 +152,7 @@ class DialogHeight extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: AppSizes.height_0_8),
                           child: Text(
-                            "txtCancel".tr.toUpperCase(),
+                            "Cancel".toUpperCase(),
                             style: TextStyle(
                               color: AppColor.white,
                               fontSize: AppFontSize.size_14,
@@ -178,7 +178,7 @@ class DialogHeight extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: AppSizes.height_0_8),
                           child: Text(
-                            "txtSave".tr.toUpperCase(),
+                            "Save".toUpperCase(),
                             style: TextStyle(
                               color: AppColor.white,
                               fontSize: AppFontSize.size_14,

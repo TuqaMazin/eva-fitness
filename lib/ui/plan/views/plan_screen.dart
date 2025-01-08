@@ -24,7 +24,6 @@ class PlanScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // _widgetRecentExercise(),
           _widgetSelectedPlan(),
           _textDaily(),
           _widgetWaterTracker(),
@@ -33,127 +32,6 @@ class PlanScreen extends StatelessWidget {
     );
   }
 
-  _widgetRecentExercise() {
-    return GetBuilder<PlanController>(
-        id: Constant.idPlanRecentHistory,
-        builder: (logic) {
-          if (logic.recentHistoryList.isNotEmpty) {
-            return Container(
-              margin: EdgeInsets.only(bottom: AppSizes.height_3),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          "txtRecent".tr,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            color: AppColor.black,
-                            fontSize: AppFontSize.size_14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Get.toNamed(AppRoutes.recent,
-                                  arguments: [logic.recentHistoryList])!
-                              .then((value) => logic.refreshData());
-                        },
-                        child: Text(
-                          "txtViewAll".tr,
-                          textAlign: TextAlign.end,
-                          style: TextStyle(
-                            color: AppColor.primary,
-                            fontSize: AppFontSize.size_10_5,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: AppSizes.height_1_5),
-                  InkWell(
-                    onTap: () {
-                      logic.onRecentItemClick();
-                    },
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          logic.recentHistoryList.isNotEmpty
-                              ? Constant.getAssetImage() +
-                                  logic.recentHistoryList[0].planDetail!
-                                      .planThumbnail +
-                                  ".webp"
-                              : Constant.getAssetImage() +
-                                  "history_butt_lift.webp",
-                          height: AppSizes.height_6_5,
-                          width: AppSizes.height_6_5,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: AppSizes.width_6),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                AutoSizeText(
-                                  logic.recentHistoryList.isNotEmpty
-                                      ? Utils.getMultiLanguageString(
-                                          logic.recentHistoryList[0].hPlanName!)
-                                      : "",
-                                  textAlign: TextAlign.start,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    color: AppColor.black,
-                                    fontSize: AppFontSize.size_13,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                SizedBox(height: AppSizes.height_0_8),
-                                FutureBuilder(
-                                    future: logic.getRecentItemTime(),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        return Text(
-                                          snapshot.data.toString(),
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: AppColor.txtColor666,
-                                            fontSize: AppFontSize.size_8_5,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        );
-                                      }
-                                      return const SizedBox();
-                                    }),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: AppColor.primary,
-                          size: AppSizes.height_1_8,
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    color: AppColor.grayDivider,
-                    height: AppSizes.height_0_05,
-                    margin: EdgeInsets.only(
-                        left: AppSizes.width_15, top: AppSizes.height_1_5),
-                  ),
-                ],
-              ),
-            );
-          }
-          return const SizedBox();
-        });
-  }
 
   _widgetSelectedPlan() {
     return InkWell(
@@ -204,7 +82,6 @@ class PlanScreen extends StatelessWidget {
                 children: [
                   Expanded(child: Container()),
                   GetBuilder<PlanController>(
-                    id: Constant.idYourPlanProgressDetails,
                     builder: (logic) {
                       return AutoSizeText(
                         Utils.getSelectedPlanName(
@@ -222,29 +99,8 @@ class PlanScreen extends StatelessWidget {
                   GetBuilder<PlanController>(
                     id: Constant.idYourPlanProgressDetails,
                     builder: (logic) {
-                      return Container(
-                        margin: EdgeInsets.only(
-                            right: AppSizes.height_12,
-                            top: AppSizes.height_1_2,
-                            bottom: AppSizes.height_1_2),
-                        child: ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          child: LinearProgressIndicator(
-                            value: logic.pbDay,
-                            minHeight: AppSizes.height_1,
-                            backgroundColor: AppColor.colorWhatsYourGoal,
-                            color: AppColor.primary,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  GetBuilder<PlanController>(
-                    id: Constant.idYourPlanProgressDetails,
-                    builder: (logic) {
                       return Text(
-                        "${logic.txtDayLeft}\t${"txtDaysLeft".tr}",
+                        "${logic.txtDayLeft}\t${"Days Left"}",
                         textAlign: TextAlign.start,
                         style: TextStyle(
                           color: AppColor.txtColor333,
@@ -256,7 +112,6 @@ class PlanScreen extends StatelessWidget {
                   ),
                   const Expanded(child: SizedBox()),
                   GetBuilder<PlanController>(
-                    id: Constant.idYourPlanProgressDetails,
                     builder: (logic) {
                       return Container(
                         width: AppSizes.fullWidth,
@@ -293,8 +148,8 @@ class PlanScreen extends StatelessWidget {
                                 vertical: AppSizes.height_1),
                             child: Text(
                               logic.btnDays == "Finished"
-                                  ? "txtFinished".tr
-                                  : "txtDay".tr.toUpperCase() + logic.btnDays,
+                                  ? "Finished"
+                                  : "Day".toUpperCase() + logic.btnDays,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: AppColor.white,
@@ -322,7 +177,7 @@ class PlanScreen extends StatelessWidget {
           EdgeInsets.only(top: AppSizes.height_3, bottom: AppSizes.height_1_5),
       width: AppSizes.fullWidth,
       child: AutoSizeText(
-        "txtDaily".tr,
+        "Daily",
         textAlign: TextAlign.left,
         maxLines: 1,
         style: TextStyle(
@@ -340,7 +195,7 @@ class PlanScreen extends StatelessWidget {
         builder: (logic) {
           return Card(
             margin: const EdgeInsets.all(0.0),
-            elevation: 2.0,
+            elevation: 2.0, //shadow effect
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)),
             child: Container(
@@ -360,7 +215,7 @@ class PlanScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "txtWaterTracker".tr,
+                          "Water Tracker",
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
@@ -387,7 +242,7 @@ class PlanScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  "\t${"txt8Cups".tr}",
+                                  "\t${"/8 Cups"}",
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     fontWeight: FontWeight.w700,
@@ -396,23 +251,6 @@ class PlanScreen extends StatelessWidget {
                                   ),
                                 ),
                               ],
-                            ),
-                          )
-                        },
-                        if (!Utils.isWaterTrackerOn()) ...{
-                          Container(
-                            margin: EdgeInsets.only(
-                                top: AppSizes.height_1_3,
-                                bottom: AppSizes.height_2_5),
-                            child: Text(
-                              "txtWaterOffMessage".tr,
-                              textAlign: TextAlign.left,
-                              maxLines: 2,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: AppFontSize.size_12_5,
-                                color: AppColor.txtColor666,
-                              ),
                             ),
                           )
                         },
@@ -446,7 +284,7 @@ class PlanScreen extends StatelessWidget {
                               padding: EdgeInsets.symmetric(
                                   vertical: AppSizes.height_0_6),
                               child: Text(
-                                "txtDrink".tr.toUpperCase(),
+                                "Drink".toUpperCase(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: AppColor.white,

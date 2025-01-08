@@ -153,9 +153,9 @@ class Utils {
 
   static getSelectedPlanName(planIndex) {
     if (planIndex == 0) {
-      return "txtLoseWeightAndKeepFit".tr;
+      return "Lose Weight & keep fit";
     } else {
-      return "txtLoseWeightAndKeepFit".tr;
+      return "Lose Weight & keep fit";
     }
   }
 
@@ -178,7 +178,7 @@ class Utils {
       if ((currentExDays - compDay) > 0) {
         txtDayLeft = (currentExDays - compDay).toString();
       } else {
-        txtDayLeft = "txtWellDone".tr;
+        txtDayLeft = "Well done!";
       }
 
       txtDayPer ??= "${double.parse(proPercentage).round()}%";
@@ -527,19 +527,7 @@ class Utils {
     return second * Constant.secDurationCal;
   }
 
-  void sendFeedback() {
-    final Uri emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: Constant.emailPath,
-      query: encodeQueryParameters(<String, String>{
-        'subject': Platform.isAndroid
-            ? "txtLoseWeightForWomenFeedbackAndroid".tr
-            : "txtLoseWeightForWomenFeedbackiOS".tr,
-        'body': " "
-      }),
-    );
-    launchUrl(emailLaunchUri);
-  }
+
 
   String? encodeQueryParameters(Map<String, String> params) {
     return params.entries
@@ -589,11 +577,11 @@ class Utils {
 
   static getExerciseLevelString(String str) {
     if (str == "Beginner") {
-      return "txtBeginner".tr;
+      return "Beginner";
     } else if (str == "Intermediate") {
-      return "txtIntermediate".tr;
+      return "Intermediate".tr;
     } else if (str == "Advanced") {
-      return "txtAdvanced".tr;
+      return "Advanced".tr;
     } else {
       return null;
     }

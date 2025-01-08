@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:women_lose_weight_flutter/google_ads/ad_helper.dart';
 import 'package:women_lose_weight_flutter/utils/debug.dart';
 
 import '../utils/utils.dart';
+import 'ad_helper.dart';
 
 /// <><><><><> ================ BANNER AD ================ <><><><><> ///
 

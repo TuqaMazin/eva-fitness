@@ -17,9 +17,6 @@ class MeScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _spaceWidget(h: AppSizes.height_3),
-          _dividerWidget(),
-          _spaceWidget(),
           _commonTitleText("General Settings"),
           _spaceWidget(h: AppSizes.height_3_3),
           Row(
@@ -94,10 +91,10 @@ class MeScreen extends StatelessWidget {
             },
           ),
           _spaceWidget(h: AppSizes.height_3),
-          // زر About Us
+
           _commonFieldText(
-            "About Us", // نص الزر
-            "", // لا يوجد رمز
+            "About Us",
+            "",
             Icons.add_business_sharp,
             Constant.boolValueFalse,
             onTap: () {

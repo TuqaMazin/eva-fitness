@@ -50,23 +50,6 @@ class HomeScreen extends StatelessWidget {
               );
             },
           ),
-          GetBuilder<HomeController>(
-            id: Constant.idIsShowLoading,
-            builder: (logic) {
-              if (logic.isShowLoading) {
-                return Container(
-                  color: AppColor.black.withOpacity(0.2),
-                  child: const Center(
-                    child: CircularProgressIndicator(
-                      color: AppColor.primary,
-                    ),
-                  ),
-                );
-              } else {
-                return const SizedBox();
-              }
-            },
-          ),
         ],
       ),
     );
@@ -83,11 +66,10 @@ class HomeScreen extends StatelessWidget {
           Expanded(
             child: AutoSizeText(
               (logic.currentIndex == 0)
-                  ? "txtAppName".tr
+                  ? "Eva Fitness"
                   : (logic.currentIndex == 1)
-                  ? "txtMe".tr
-                  : "txtMe".tr,
-              maxLines: 1,
+                  ? "Me"
+                  : "Me",
               style: TextStyle(
                 color: AppColor.black,
                 fontSize: AppFontSize.size_16,
@@ -139,7 +121,7 @@ class HomeScreen extends StatelessWidget {
                             child: CircularProgressIndicator(
                               backgroundColor: AppColor.commonBlueLightColor,
                               value: logic.currentGlass! / 8,
-                              valueColor: const AlwaysStoppedAnimation(AppColor.commonBlueColor),
+                              valueColor: const AlwaysStoppedAnimation(AppColor.commonBlueColor), //fixed color
                               strokeWidth: AppSizes.width_1_2,
                             ),
                           ),
@@ -217,12 +199,12 @@ class HomeScreen extends StatelessWidget {
           items: [
             _bottomNavigationBarItem(
               icon: Constant.getAssetIcons() + "ic_plan.webp",
-              label: 'txtPlan'.tr,
+              label: 'Plan',
               index: 0,
             ),
             _bottomNavigationBarItem(
               icon: Constant.getAssetIcons() + "ic_me.webp",
-              label: 'txtMe'.tr,
+              label: 'Me',
               index: 1,
             ),
           ],

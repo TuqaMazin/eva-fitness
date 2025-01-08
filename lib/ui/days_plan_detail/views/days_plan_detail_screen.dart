@@ -88,13 +88,12 @@ class DaysPlanDetailScreen extends StatelessWidget {
               padding: const EdgeInsets.all(0.0),
               child: Icon(
                 Icons.arrow_back_sharp,
-                color: (logic.isShrink) ? AppColor.black : AppColor.white,
+                color:  AppColor.black,
                 size: AppSizes.height_3,
               ),
             ),
           ),
           flexibleSpace: FlexibleSpaceBar(
-            centerTitle: Constant.boolValueFalse,
             background: Container(
               width: double.infinity,
               padding: EdgeInsets.symmetric(
@@ -122,25 +121,11 @@ class DaysPlanDetailScreen extends StatelessWidget {
                       fontSize: AppFontSize.size_17,
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(
-                        right: AppSizes.height_15,
-                        top: AppSizes.height_1_2,
-                        bottom: AppSizes.height_1_2),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      child: LinearProgressIndicator(
-                        value: logic.pbDay,
-                        minHeight: AppSizes.height_1,
-                        backgroundColor: AppColor.colorWhatsYourGoal,
-                        color: AppColor.primary,
-                      ),
-                    ),
-                  ),
+                  SizedBox(height: 33,),
                   Container(
                     margin: EdgeInsets.only(bottom: AppSizes.height_4),
                     child: Text(
-                      "${logic.txtDayLeft}\t${"txtDaysLeft".tr}",
+                      "${logic.txtDayLeft}\t${"Days Left"}",
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         color: AppColor.txtColor333,
@@ -166,7 +151,7 @@ class DaysPlanDetailScreen extends StatelessWidget {
           itemCount: logic.pWeeklyDayList.length,
           shrinkWrap: Constant.boolValueTrue,
           scrollDirection: Axis.vertical,
-          physics: const NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(), //scroll the body
           padding: EdgeInsets.symmetric(
               horizontal: AppSizes.width_5_5, vertical: AppSizes.height_1_5),
           itemBuilder: (BuildContext context, int index) {

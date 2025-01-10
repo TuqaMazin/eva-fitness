@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:women_lose_weight_flutter/database/helper/firestore_helper.dart';
 import 'package:women_lose_weight_flutter/routes/app_routes.dart';
 import 'package:women_lose_weight_flutter/ui/me/controllers/me_controller.dart';
 import 'package:women_lose_weight_flutter/utils/constant.dart';
@@ -96,6 +98,22 @@ class MeScreen extends StatelessWidget {
             Constant.boolValueFalse,
             onTap: () {
               Get.toNamed(AppRoutes.about);
+            },
+          ),
+          _spaceWidget(h: AppSizes.height_3),
+          _commonFieldText(
+            "Add user",
+            "",
+            Icons.add_business_sharp,
+            Constant.boolValueFalse,
+            onTap: () async {
+              User? user = FirebaseAuth.instance.currentUser;
+
+              if (user != null) {
+                await FirestoreHelper().addUser(user);
+              } else {
+                print("No user is signed in.");
+              }
             },
           ),
           _spaceWidget(h: AppSizes.height_3),

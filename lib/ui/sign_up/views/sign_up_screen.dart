@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,7 +10,11 @@ import '../../../routes/app_routes.dart';
 import '../../../utils/constant.dart';
 
 class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({super.key});
+  SignUpScreen({super.key});
+
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController fullName = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +109,7 @@ class SignUpScreen extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(7),
       child: TextFormField(
+        controller: fullName,
         maxLines: 1,
         textInputAction: TextInputAction.done,
         keyboardType: TextInputType.text,
@@ -139,6 +146,7 @@ class SignUpScreen extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(7),
       child: TextFormField(
+        controller: email,
         maxLines: 1,
         textInputAction: TextInputAction.done,
         keyboardType: TextInputType.text,
@@ -175,6 +183,7 @@ class SignUpScreen extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(7),
       child: TextFormField(
+        controller: password,
         maxLines: 1,
         textInputAction: TextInputAction.done,
         keyboardType: TextInputType.text,
@@ -207,6 +216,7 @@ class SignUpScreen extends StatelessWidget {
       ),
     );
   }
+
   _signUpButton() {
     return Container(
       width: AppSizes.fullWidth,
@@ -236,15 +246,24 @@ class SignUpScreen extends StatelessWidget {
             ),
           ),
         ),
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: AppSizes.height_1),
-          child: Text(
-            "Sign Up",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: AppColor.white,
-              fontSize: AppFontSize.size_13,
-              fontWeight: FontWeight.w700,
+        child: GestureDetector(
+          onTap: () async {
+            signUpWithEmailAndPassword(
+              email.text,
+              password.text,
+              fullName.text,
+            );
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: AppSizes.height_1),
+            child: Text(
+              "Sign Up",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppColor.white,
+                fontSize: AppFontSize.size_13,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ),
@@ -310,5 +329,40 @@ class SignUpScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+Future<User?> signUpWithEmailAndPassword(
+    String email, String password, String fullName) async {
+  try {
+    UserCredential userCredential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    User? user = userCredential.user;
+
+    if (user != null) {
+      // Update user profile with the full name
+      await user.updateDisplayName(fullName);
+      await user.reload();
+      user = FirebaseAuth.instance.currentUser;
+
+      // Store the user's full name and other details in Firestore
+      await FirebaseFirestore.instance.collection("users").doc(user!.uid).set({
+        'userId': user.uid,
+        'userName': fullName,
+        'userEmail': user.email,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      print("User signed up and data stored successfully: ${user.uid}");
+    }
+
+    return user;
+  } catch (e) {
+    print("Error signing up: $e");
+    return null;
   }
 }

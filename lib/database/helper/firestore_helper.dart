@@ -99,32 +99,35 @@ class FirestoreHelper {
   /// Main User Table
 
   addUser(User? user) {
-    return _getDataBaseTable(usersTable).doc(user!.uid).get().then((value) {
-      if (!value.exists) {
-        _getDataBaseTable(usersTable).doc(user.uid).set({
-          userId: user.uid,
-          userName: user.displayName,
-          userEmail: user.email,
-          createdAt: Timestamp.now(),
-          updatedAt: Timestamp.now(),
-          lastDayCompleteLoseWeight: Utils.getLastCompletedDay(1),
-        }).then((value) {
-          Debug.printLog("User Added Success");
-          sync();
-        }).catchError((error) => Debug.printLog("Failed to add user: $error"));
-      } else {
-        _getDataBaseTable(usersTable).doc(user.uid).update({
-          userId: user.uid,
-          userName: user.displayName!,
-          userEmail: user.email,
-          updatedAt: Timestamp.now(),
-        }).then((value) {
-          Debug.printLog("Update User Success");
-          sync();
-        }).catchError(
-                (error) => Debug.printLog("Failed to Update user: $error"));
-      }
-    });
+    return _getDataBaseTable(usersTable).doc(user!.uid).get().then(
+      (value) {
+        if (!value.exists) {
+          _getDataBaseTable(usersTable).doc(user.uid).set({
+            userId: user.uid,
+            userName: user.displayName,
+            userEmail: user.email,
+            createdAt: Timestamp.now(),
+            updatedAt: Timestamp.now(),
+            lastDayCompleteLoseWeight: Utils.getLastCompletedDay(1),
+          }).then((value) {
+            Debug.printLog("User Added Success");
+            sync();
+          }).catchError(
+              (error) => Debug.printLog("Failed to add user: $error"));
+        } else {
+          _getDataBaseTable(usersTable).doc(user.uid).update({
+            userId: user.uid,
+            userName: user.displayName!,
+            userEmail: user.email,
+            updatedAt: Timestamp.now(),
+          }).then((value) {
+            Debug.printLog("Update User Success");
+            sync();
+          }).catchError(
+              (error) => Debug.printLog("Failed to Update user: $error"));
+        }
+      },
+    );
   }
 
   /// Last Sync Date
@@ -133,16 +136,16 @@ class FirestoreHelper {
     await _getDataBaseTable(usersTable)
         .doc(Utils.getFirebaseUid())
         .update({
-      lastSync: Timestamp.now(),
-    })
+          lastSync: Timestamp.now(),
+        })
         .then((value) => Debug.printLog("Update Last Sync Date Success"))
         .catchError((error) =>
-        Debug.printLog("Failed to Update Last Sync Date: $error"));
+            Debug.printLog("Failed to Update Last Sync Date: $error"));
   }
 
   getSyncLastDate() async {
     var data =
-    await _getDataBaseTable(usersTable).doc(Utils.getFirebaseUid()).get();
+        await _getDataBaseTable(usersTable).doc(Utils.getFirebaseUid()).get();
 
     await Preference.shared.setString(Preference.lastSyncDate,
         DateFormat.jm().format(data[lastSync].toDate()).toString());
@@ -151,15 +154,14 @@ class FirestoreHelper {
     _planController.refreshData();
 
     Debug.printLog(
-        "--------------<><><> UPDATE LAST SYNC DATE <><><>-------------- ${data[lastSync]
-            .toDate()}");
+        "--------------<><><> UPDATE LAST SYNC DATE <><><>-------------- ${data[lastSync].toDate()}");
   }
 
   /// General Data
 
   syncGeneralData() async {
     var data =
-    await _getDataBaseTable(usersTable).doc(Utils.getFirebaseUid()).get();
+        await _getDataBaseTable(usersTable).doc(Utils.getFirebaseUid()).get();
 
     Map<String, dynamic> map = {
       if (Utils.getLastCompletedDay(1) > data[lastDayCompleteLoseWeight] ||
@@ -178,7 +180,7 @@ class FirestoreHelper {
 
   getGeneralData() async {
     var data =
-    await _getDataBaseTable(usersTable).doc(Utils.getFirebaseUid()).get();
+        await _getDataBaseTable(usersTable).doc(Utils.getFirebaseUid()).get();
 
     Utils.setLastCompletedDay(1, (data[lastDayCompleteLoseWeight] - 1));
     await Preference.shared.clearResetCompletedDay();
@@ -198,21 +200,21 @@ class FirestoreHelper {
           .collection(DBHelper.dbHelper.dayExTable)
           .doc(element.id.toString())
           .set({
-        DBHelper.dbHelper.dayExId: element.id,
-        DBHelper.dbHelper.planId: element.planId,
-        DBHelper.dbHelper.dayId: element.dayId,
-        DBHelper.dbHelper.exId: element.exId,
-        DBHelper.dbHelper.exTime: element.exTime,
-        DBHelper.dbHelper.exUnit: element.exUnit,
-        DBHelper.dbHelper.isCompleted: element.isCompleted,
-        DBHelper.dbHelper.updatedExTime: element.updatedExTime,
-        DBHelper.dbHelper.replaceExId: element.replaceExId,
-        DBHelper.dbHelper.isDeleted: element.isDeleted,
-        DBHelper.dbHelper.planSort: element.sort,
-        DBHelper.dbHelper.defaultSort: element.defaultSort,
-        DBHelper.dbHelper.createdAt: Timestamp.now(),
-        DBHelper.dbHelper.status: 0,
-      })
+            DBHelper.dbHelper.dayExId: element.id,
+            DBHelper.dbHelper.planId: element.planId,
+            DBHelper.dbHelper.dayId: element.dayId,
+            DBHelper.dbHelper.exId: element.exId,
+            DBHelper.dbHelper.exTime: element.exTime,
+            DBHelper.dbHelper.exUnit: element.exUnit,
+            DBHelper.dbHelper.isCompleted: element.isCompleted,
+            DBHelper.dbHelper.updatedExTime: element.updatedExTime,
+            DBHelper.dbHelper.replaceExId: element.replaceExId,
+            DBHelper.dbHelper.isDeleted: element.isDeleted,
+            DBHelper.dbHelper.planSort: element.sort,
+            DBHelper.dbHelper.defaultSort: element.defaultSort,
+            DBHelper.dbHelper.createdAt: Timestamp.now(),
+            DBHelper.dbHelper.status: 0,
+          })
           .then((value) => Debug.printLog("Sync DayExTable Success"))
           .catchError(
               (error) => Debug.printLog("Failed to Sync DayExTable: $error"));
@@ -267,23 +269,23 @@ class FirestoreHelper {
 
       await doc
           .set({
-        DBHelper.dbHelper.hId: element.hid,
-        DBHelper.dbHelper.hPlanName: element.hPlanName,
-        DBHelper.dbHelper.hPlanId: element.hPlanId,
-        DBHelper.dbHelper.hDayName: element.hDayName,
-        DBHelper.dbHelper.hBurnKcal: element.hBurnKcal,
-        DBHelper.dbHelper.hTotalEx: element.hTotalEx,
-        DBHelper.dbHelper.hKg: element.hKg,
-        DBHelper.dbHelper.hFeet: element.hFeet,
-        DBHelper.dbHelper.hInch: element.hInch,
-        DBHelper.dbHelper.hFeelRate: element.hFeelRate,
-        DBHelper.dbHelper.hCompletionTime: element.hCompletionTime,
-        DBHelper.dbHelper.hDateTime: element.hDateTime,
-        DBHelper.dbHelper.hDayId: element.hDayId,
-        DBHelper.dbHelper.status: 0,
-        DBHelper.dbHelper.createdAt: Timestamp.now(),
-        DBHelper.dbHelper.fireStoreID: doc.id,
-      })
+            DBHelper.dbHelper.hId: element.hid,
+            DBHelper.dbHelper.hPlanName: element.hPlanName,
+            DBHelper.dbHelper.hPlanId: element.hPlanId,
+            DBHelper.dbHelper.hDayName: element.hDayName,
+            DBHelper.dbHelper.hBurnKcal: element.hBurnKcal,
+            DBHelper.dbHelper.hTotalEx: element.hTotalEx,
+            DBHelper.dbHelper.hKg: element.hKg,
+            DBHelper.dbHelper.hFeet: element.hFeet,
+            DBHelper.dbHelper.hInch: element.hInch,
+            DBHelper.dbHelper.hFeelRate: element.hFeelRate,
+            DBHelper.dbHelper.hCompletionTime: element.hCompletionTime,
+            DBHelper.dbHelper.hDateTime: element.hDateTime,
+            DBHelper.dbHelper.hDayId: element.hDayId,
+            DBHelper.dbHelper.status: 0,
+            DBHelper.dbHelper.createdAt: Timestamp.now(),
+            DBHelper.dbHelper.fireStoreID: doc.id,
+          })
           .then((value) => Debug.printLog("Sync HistoryTable Success"))
           .catchError(
               (error) => Debug.printLog("Failed to Sync HistoryTable: $error"));
@@ -293,10 +295,9 @@ class FirestoreHelper {
   Future<void> deleteAllHistoryTableDataFireStore(
       List<HistoryTable> list) async {
     var deleteList = list
-        .where((element) =>
-    (element.status == Constant.statusSyncDeleted &&
-        element.fireStoreId != null &&
-        element.fireStoreId!.isNotEmpty))
+        .where((element) => (element.status == Constant.statusSyncDeleted &&
+            element.fireStoreId != null &&
+            element.fireStoreId!.isNotEmpty))
         .toList();
 
     if (deleteList.isEmpty) {
@@ -307,7 +308,7 @@ class FirestoreHelper {
         .doc(Utils.getFirebaseUid())
         .collection(DBHelper.dbHelper.historyTable)
         .where(DBHelper.dbHelper.fireStoreID,
-        whereIn: deleteList.map((e) => e.fireStoreId).toList())
+            whereIn: deleteList.map((e) => e.fireStoreId).toList())
         .get();
 
     final batch = FirebaseFirestore.instance.batch();
@@ -347,24 +348,24 @@ class FirestoreHelper {
           .collection(DBHelper.dbHelper.homeExSingleTable)
           .doc(element.id.toString())
           .set({
-        DBHelper.dbHelper.dayExId: element.id,
-        DBHelper.dbHelper.planId: element.planId,
-        DBHelper.dbHelper.dayId: element.dayId,
-        DBHelper.dbHelper.exId: element.exId,
-        DBHelper.dbHelper.exTime: element.exTime,
-        DBHelper.dbHelper.isCompleted: element.isCompleted,
-        DBHelper.dbHelper.updatedExTime: element.updatedExTime,
-        DBHelper.dbHelper.replaceExId: element.replaceExId,
-        DBHelper.dbHelper.planSort: element.planId,
-        DBHelper.dbHelper.defaultSort: element.defaultSort,
-        DBHelper.dbHelper.exUnit: element.exUnit,
-        DBHelper.dbHelper.isDeleted: element.isDeleted,
-        DBHelper.dbHelper.createdAt: Timestamp.now(),
-        DBHelper.dbHelper.status: 0,
-      })
+            DBHelper.dbHelper.dayExId: element.id,
+            DBHelper.dbHelper.planId: element.planId,
+            DBHelper.dbHelper.dayId: element.dayId,
+            DBHelper.dbHelper.exId: element.exId,
+            DBHelper.dbHelper.exTime: element.exTime,
+            DBHelper.dbHelper.isCompleted: element.isCompleted,
+            DBHelper.dbHelper.updatedExTime: element.updatedExTime,
+            DBHelper.dbHelper.replaceExId: element.replaceExId,
+            DBHelper.dbHelper.planSort: element.planId,
+            DBHelper.dbHelper.defaultSort: element.defaultSort,
+            DBHelper.dbHelper.exUnit: element.exUnit,
+            DBHelper.dbHelper.isDeleted: element.isDeleted,
+            DBHelper.dbHelper.createdAt: Timestamp.now(),
+            DBHelper.dbHelper.status: 0,
+          })
           .then((value) => Debug.printLog("Sync HomeExSingleTable Success"))
           .catchError((error) =>
-          Debug.printLog("Failed to Sync HomeExSingleTable: $error"));
+              Debug.printLog("Failed to Sync HomeExSingleTable: $error"));
     }
   }
 
@@ -414,20 +415,20 @@ class FirestoreHelper {
           .collection(DBHelper.dbHelper.planDaysTable)
           .doc(element.dayId.toString())
           .set({
-        DBHelper.dbHelper.dayId: element.dayId,
-        DBHelper.dbHelper.planId: element.planId,
-        DBHelper.dbHelper.dayName: element.dayName,
-        DBHelper.dbHelper.isCompleted: element.isCompleted,
-        DBHelper.dbHelper.dayProgress: element.dayProgress,
-        DBHelper.dbHelper.weekName: element.weekName,
-        DBHelper.dbHelper.planWorkouts: element.planWorkouts,
-        DBHelper.dbHelper.planMinutes: element.planMinutes,
-        DBHelper.dbHelper.createdAt: Timestamp.now(),
-        DBHelper.dbHelper.status: 0,
-      })
+            DBHelper.dbHelper.dayId: element.dayId,
+            DBHelper.dbHelper.planId: element.planId,
+            DBHelper.dbHelper.dayName: element.dayName,
+            DBHelper.dbHelper.isCompleted: element.isCompleted,
+            DBHelper.dbHelper.dayProgress: element.dayProgress,
+            DBHelper.dbHelper.weekName: element.weekName,
+            DBHelper.dbHelper.planWorkouts: element.planWorkouts,
+            DBHelper.dbHelper.planMinutes: element.planMinutes,
+            DBHelper.dbHelper.createdAt: Timestamp.now(),
+            DBHelper.dbHelper.status: 0,
+          })
           .then((value) => Debug.printLog("Sync PlanDaysTable Success"))
           .catchError((error) =>
-          Debug.printLog("Failed to Sync PlanDaysTable: $error"));
+              Debug.printLog("Failed to Sync PlanDaysTable: $error"));
     }
   }
 
@@ -477,14 +478,14 @@ class FirestoreHelper {
           .collection(DBHelper.dbHelper.weightTable)
           .doc(element.weightId.toString())
           .set({
-        DBHelper.dbHelper.weightId: element.weightId,
-        DBHelper.dbHelper.weightKg: element.weightKg,
-        DBHelper.dbHelper.weightLb: element.weightLb,
-        DBHelper.dbHelper.weightDate: element.weightDate,
-        DBHelper.dbHelper.currentTimeStamp: element.currentTimeStamp,
-        DBHelper.dbHelper.createdAt: Timestamp.now(),
-        DBHelper.dbHelper.status: 0,
-      })
+            DBHelper.dbHelper.weightId: element.weightId,
+            DBHelper.dbHelper.weightKg: element.weightKg,
+            DBHelper.dbHelper.weightLb: element.weightLb,
+            DBHelper.dbHelper.weightDate: element.weightDate,
+            DBHelper.dbHelper.currentTimeStamp: element.currentTimeStamp,
+            DBHelper.dbHelper.createdAt: Timestamp.now(),
+            DBHelper.dbHelper.status: 0,
+          })
           .then((value) => Debug.printLog("Sync WeightTable Success"))
           .catchError(
               (error) => Debug.printLog("Failed to Sync WeightTable: $error"));

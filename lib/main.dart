@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -32,13 +33,13 @@ import 'utils/debug.dart';
 import 'utils/preference.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 
 final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
-BehaviorSubject<ReceivedNotification>();
+    BehaviorSubject<ReceivedNotification>();
 
 final BehaviorSubject<String?> selectNotificationSubject =
-BehaviorSubject<String?>();
+    BehaviorSubject<String?>();
 
 class ReceivedNotification {
   ReceivedNotification({
@@ -57,10 +58,10 @@ class ReceivedNotification {
 Future<void> initPlugin() async {
   try {
     final TrackingStatus status =
-    await AppTrackingTransparency.trackingAuthorizationStatus;
+        await AppTrackingTransparency.trackingAuthorizationStatus;
     if (status == TrackingStatus.notDetermined) {
       var authStatus =
-      await AppTrackingTransparency.requestTrackingAuthorization();
+          await AppTrackingTransparency.requestTrackingAuthorization();
       Preference.shared
           .setString(Preference.trackStatus, authStatus.toString());
     }
@@ -87,6 +88,9 @@ Future<void> main() async {
   /// Initialize Firebase
   await Firebase.initializeApp();
 
+  String? fcmToken = await FCMService.getFCMToken();
+  print("Retrieved FCM Token: $fcmToken");
+
   ///ignore: deprecated_member_use
   InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
 
@@ -103,10 +107,10 @@ Future<void> main() async {
 
   /// Initialize Notification
   const AndroidInitializationSettings initializationSettingsAndroid =
-  AndroidInitializationSettings('ic_notification');
+      AndroidInitializationSettings('ic_notification');
 
   final DarwinInitializationSettings initializationSettingsIOS =
-  DarwinInitializationSettings(
+      DarwinInitializationSettings(
     requestAlertPermission: true,
     requestBadgePermission: true,
     requestSoundPermission: true,
@@ -123,13 +127,16 @@ Future<void> main() async {
   );
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onDidReceiveNotificationResponse: (NotificationResponse? notificationResponse) async {
-        if (notificationResponse!.payload != null && notificationResponse.payload == Constant.strExerciseReminder) {
-        } else if (notificationResponse.payload != null && notificationResponse.payload == Constant.strWaterReminder) {}
+      onDidReceiveNotificationResponse:
+          (NotificationResponse? notificationResponse) async {
+    if (notificationResponse!.payload != null &&
+        notificationResponse.payload == Constant.strExerciseReminder) {
+    } else if (notificationResponse.payload != null &&
+        notificationResponse.payload == Constant.strWaterReminder) {}
 
-        selectedNotificationPayload = notificationResponse.payload;
-        selectNotificationSubject.add(notificationResponse.payload);
-      });
+    selectedNotificationPayload = notificationResponse.payload;
+    selectNotificationSubject.add(notificationResponse.payload);
+  });
 
   /// Initialize Local TimeZone
   _configureLocalTimeZone();
@@ -153,7 +160,7 @@ class MyApp extends StatefulWidget {
   static final FlutterTts flutterTts = FlutterTts();
   static final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   static final StreamController purchaseStreamController =
-  StreamController<PurchaseDetails>.broadcast();
+      StreamController<PurchaseDetails>.broadcast();
 
   const MyApp({super.key});
 
@@ -184,44 +191,46 @@ class _MyAppState extends State<MyApp> {
     _rescheduleWaterTrackerNotifications();
     super.didChangeDependencies();
   }
+
   _rescheduleWaterTrackerNotifications() async {
     await _requestPermissions();
     bool isTurnOnWaterTracker =
         Preference.shared.getBool(Preference.turnOnWaterTracker) ??
             Constant.boolValueTrue;
     if (isTurnOnWaterTracker) {
-      if(notificationsEnabled)Utils.setWaterReminderNotifications();
+      if (notificationsEnabled) Utils.setWaterReminderNotifications();
     } else {
       Utils.cancelWaterReminderNotifications();
     }
   }
+
   bool notificationsEnabled = false;
   Future<bool> _requestPermissions() async {
     if (Platform.isIOS || Platform.isMacOS) {
       await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-          IOSFlutterLocalNotificationsPlugin>()
+              IOSFlutterLocalNotificationsPlugin>()
           ?.requestPermissions(
-        alert: true,
-        badge: true,
-        sound: true,
-      )
+            alert: true,
+            badge: true,
+            sound: true,
+          )
           .then((value) {
         return notificationsEnabled = value ?? false;
       });
     } else if (Platform.isAndroid) {
       final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
-      flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>();
+          flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>();
 
       final bool? grantedNotificationPermission =
-      await androidImplementation?.requestNotificationsPermission();
+          await androidImplementation?.requestNotificationsPermission();
 
       final bool? grantedAlarmPermission =
-      await androidImplementation?.requestExactAlarmsPermission();
+          await androidImplementation?.requestExactAlarmsPermission();
 
       return notificationsEnabled =
-      (grantedNotificationPermission! && grantedAlarmPermission!);
+          (grantedNotificationPermission! && grantedAlarmPermission!);
     }
     return false;
   }
@@ -242,7 +251,39 @@ class _MyAppState extends State<MyApp> {
       defaultTransition: Transition.fade,
       transitionDuration: const Duration(milliseconds: 200),
       initialRoute:
-      (Utils.isFirstTimeOpenApp()) ? AppRoutes.initial : AppRoutes.home,
+          (Utils.isFirstTimeOpenApp()) ? AppRoutes.initial : AppRoutes.home,
     );
+  }
+}
+
+class FCMService {
+  static Future<String?> getFCMToken() async {
+    try {
+      FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+      // Request permissions for iOS
+      NotificationSettings settings = await messaging.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      );
+
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        // Retrieve the FCM token
+        String? token = await messaging.getToken();
+        print("FCM Token: $token");
+        return token;
+      } else {
+        print("User denied notification permissions.");
+        return null;
+      }
+    } catch (e) {
+      print("Error retrieving FCM token: $e");
+      return null;
+    }
   }
 }

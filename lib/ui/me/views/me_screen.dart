@@ -6,6 +6,7 @@ import 'package:women_lose_weight_flutter/ui/me/controllers/me_controller.dart';
 import 'package:women_lose_weight_flutter/utils/constant.dart';
 import 'package:women_lose_weight_flutter/utils/sizer_utils.dart';
 import '../../../utils/color.dart';
+
 class MeScreen extends StatelessWidget {
   MeScreen({super.key});
   final MeController _meController = Get.find<MeController>();
@@ -63,7 +64,6 @@ class MeScreen extends StatelessWidget {
               Get.toNamed(AppRoutes.myProfile);
             },
           ),
-
           _spaceWidget(h: AppSizes.height_3),
           _spaceWidget(),
           _dividerWidget(),
@@ -76,9 +76,7 @@ class MeScreen extends StatelessWidget {
             "",
             Icons.edit_outlined,
             Constant.boolValueFalse,
-            onTap: () {
-
-            },
+            onTap: () {},
           ),
           _spaceWidget(h: AppSizes.height_3),
           _commonFieldText(
@@ -91,19 +89,16 @@ class MeScreen extends StatelessWidget {
             },
           ),
           _spaceWidget(h: AppSizes.height_3),
-
           _commonFieldText(
             "About Us",
             "",
             Icons.add_business_sharp,
             Constant.boolValueFalse,
             onTap: () {
-
               Get.toNamed(AppRoutes.about);
             },
           ),
           _spaceWidget(h: AppSizes.height_3),
-
           _commonFieldText(
             "Logout",
             "",
@@ -149,13 +144,13 @@ class MeScreen extends StatelessWidget {
               width: AppSizes.height_3,
               child: (isAsset)
                   ? Image.asset(
-                Constant.getAssetIcons() + asset,
-                color: AppColor.txtColor999,
-              )
+                      Constant.getAssetIcons() + asset,
+                      color: AppColor.txtColor999,
+                    )
                   : Icon(
-                icon,
-                color: AppColor.txtColor999,
-              ),
+                      icon,
+                      color: AppColor.txtColor999,
+                    ),
             ),
             Expanded(
               child: Padding(
@@ -240,5 +235,4 @@ class MeScreen extends StatelessWidget {
       ),
     );
   }
-
 }

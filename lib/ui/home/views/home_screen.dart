@@ -68,8 +68,8 @@ class HomeScreen extends StatelessWidget {
               (logic.currentIndex == 0)
                   ? "Eva Fitness"
                   : (logic.currentIndex == 1)
-                  ? "Me"
-                  : "Me",
+                      ? "Me"
+                      : "Me",
               style: TextStyle(
                 color: AppColor.black,
                 fontSize: AppFontSize.size_16,
@@ -85,10 +85,12 @@ class HomeScreen extends StatelessWidget {
                 return InkWell(
                   onTap: () {
                     if (Utils.isWaterTrackerOn()) {
-                      Get.toNamed(AppRoutes.waterTracker, arguments: [logic.currentGlass]);
+                      Get.toNamed(AppRoutes.waterTracker,
+                          arguments: [logic.currentGlass]);
                       logic.currentWaterGlass();
                     } else {
-                      Get.toNamed(AppRoutes.turnOnWater, arguments: [logic.currentGlass]);
+                      Get.toNamed(AppRoutes.turnOnWater,
+                          arguments: [logic.currentGlass]);
                     }
                   },
                   child: badge.Badge(
@@ -121,7 +123,8 @@ class HomeScreen extends StatelessWidget {
                             child: CircularProgressIndicator(
                               backgroundColor: AppColor.commonBlueLightColor,
                               value: logic.currentGlass! / 8,
-                              valueColor: const AlwaysStoppedAnimation(AppColor.commonBlueColor), //fixed color
+                              valueColor: const AlwaysStoppedAnimation(
+                                  AppColor.commonBlueColor), //fixed color
                               strokeWidth: AppSizes.width_1_2,
                             ),
                           ),
@@ -133,7 +136,8 @@ class HomeScreen extends StatelessWidget {
                               top: AppSizes.width_3_5,
                             ),
                             child: Image.asset(
-                              Constant.getAssetIcons() + "ic_homepage_drink.webp",
+                              Constant.getAssetIcons() +
+                                  "ic_homepage_drink.webp",
                               alignment: Alignment.center,
                             ),
                           ),

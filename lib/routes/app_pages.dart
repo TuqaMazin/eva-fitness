@@ -23,7 +23,7 @@ import '../ui/create_new_password/bindings/create_new_password_binding.dart';
 import '../ui/create_new_password/views/create_new_password_screen.dart';
 import '../ui/days_plan_detail/bindings/days_plan_detail_binding.dart';
 import '../ui/days_plan_detail/views/days_plan_detail_screen.dart';
-import '../ui/edit_plan/views/edit_plan_screen.dart';
+
 import '../ui/email_verified/bindings/email_verified_binding.dart';
 import '../ui/email_verified/views/email_verified_screen.dart';
 import '../ui/exercise_list/bindings/exercise_list_binding.dart';
@@ -43,8 +43,6 @@ import '../ui/plan/views/plan_screen.dart';
 import '../ui/recent/bindings/recent_binding.dart';
 import '../ui/recent/views/recent_screen.dart';
 
-import '../ui/report/bindings/report_binding.dart';
-import '../ui/report/views/report_screen.dart';
 import '../ui/rest/bindings/rest_binding.dart';
 import '../ui/rest/views/rest_screen.dart';
 import '../ui/rest_day/bindings/rest_day_binding.dart';

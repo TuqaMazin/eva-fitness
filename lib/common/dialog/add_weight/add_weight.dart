@@ -1,13 +1,13 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
 import 'package:women_lose_weight_flutter/database/helper/db_helper.dart';
 import 'package:women_lose_weight_flutter/database/table/weight_table.dart';
 import 'package:women_lose_weight_flutter/utils/color.dart';
 import 'package:women_lose_weight_flutter/utils/preference.dart';
-import 'package:women_lose_weight_flutter/utils/sizer_utils.dart';
+
 import 'package:women_lose_weight_flutter/utils/utils.dart';
 import '../../../utils/constant.dart';
 import '../../../utils/debug.dart';
@@ -40,13 +40,7 @@ class AddWeightDialogState extends State<AddWeightDialog> {
     });
 
     startDate = DateTime(
-        DateTime
-            .now()
-            .year - 1, DateTime
-        .now()
-        .month, DateTime
-        .now()
-        .day);
+        DateTime.now().year - 1, DateTime.now().month, DateTime.now().day);
     endDate = DateTime.now().add(const Duration(days: 4));
     daysCount = endDate!.difference(startDate!).inDays;
 
@@ -62,9 +56,7 @@ class AddWeightDialogState extends State<AddWeightDialog> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Center(
           child: Wrap(
-            children: [
-
-            ],
+            children: [],
           ),
         ),
       ),
@@ -91,16 +83,9 @@ class AddWeightDialogState extends State<AddWeightDialog> {
     if (weightDataList.isNotEmpty) {
       Debug.printLog("not empty");
       var res = weightDataList.where((element) =>
-      element.weightId ==
-          DateTime(
-              _selectedDate.year,
-              _selectedDate.month,
-              _selectedDate.day,
-              0,
-              0,
-              0,
-              0,
-              0)
+          element.weightId ==
+          DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day,
+                  0, 0, 0, 0, 0)
               .millisecondsSinceEpoch);
       Debug.printLog("result ==> $res");
       if (res.isNotEmpty) {
@@ -122,44 +107,30 @@ class AddWeightDialogState extends State<AddWeightDialog> {
       weightKG: isKg! && !isLb!
           ? double.parse(weightController.text).round().toString()
           : Utils.convertWeightLbsToKg(double.parse(weightController.text))
-          .toString(),
+              .toString(),
       weightLBS: !isKg! && isLb!
           ? double.parse(weightController.text).round().toString()
           : Utils.convertWeightKgToLbs(double.parse(weightController.text))
-          .toString(),
-      id: DateTime(
-          _selectedDate.year,
-          _selectedDate.month,
-          _selectedDate.day,
-          0,
-          0,
-          0,
-          0,
-          0)
+              .toString(),
+      id: DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day,
+              0, 0, 0, 0, 0)
           .millisecondsSinceEpoch,
     );
   }
 
   void insertWeightToDatabase() {
     DBHelper.dbHelper.insertWeightData(WeightTable(
-      weightId: DateTime(
-          _selectedDate.year,
-          _selectedDate.month,
-          _selectedDate.day,
-          0,
-          0,
-          0,
-          0,
-          0)
+      weightId: DateTime(_selectedDate.year, _selectedDate.month,
+              _selectedDate.day, 0, 0, 0, 0, 0)
           .millisecondsSinceEpoch,
       weightKg: isKg! && !isLb!
           ? double.parse(weightController.text).round().toString()
           : Utils.convertWeightLbsToKg(double.parse(weightController.text))
-          .toString(),
+              .toString(),
       weightLb: !isKg! && isLb!
           ? double.parse(weightController.text).round().toString()
           : Utils.convertWeightKgToLbs(double.parse(weightController.text))
-          .toString(),
+              .toString(),
       weightDate: _selectedDate.toString(),
       currentTimeStamp: DateTime.now().toString(),
       status: Constant.statusSyncPending,

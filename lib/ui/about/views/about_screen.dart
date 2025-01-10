@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:women_lose_weight_flutter/utils/color.dart';
 import 'package:women_lose_weight_flutter/utils/sizer_utils.dart';
-import 'package:women_lose_weight_flutter/routes/app_routes.dart';
 
 import '../../../utils/constant.dart'; // تأكد من استيراد المسار
 
@@ -41,7 +40,8 @@ class AboutScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width: AppSizes.width_2), // مساحة بين الأيقونة والعنوان
+                  SizedBox(
+                      width: AppSizes.width_2), // مساحة بين الأيقونة والعنوان
                   Text(
                     "ABOUT US".tr.toUpperCase(),
                     textAlign: TextAlign.left,
@@ -53,7 +53,8 @@ class AboutScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: AppSizes.height_3), // مساحة إضافية لتقليل الارتفاع
+              SizedBox(
+                  height: AppSizes.height_3), // مساحة إضافية لتقليل الارتفاع
               Text(
                 "Welcome to our app! We are here to help you achieve your health and fitness goals in an easy and enjoyable way. Our app is specifically designed to meet the needs of individuals looking to improve their lifestyle, whether it’s through weight loss or maintaining a healthy balance.",
                 textAlign: TextAlign.left,
@@ -65,41 +66,47 @@ class AboutScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: AppSizes.height_2),
-              Text('Features of the App:\n',
-                style: TextStyle(fontSize: AppFontSize.size_12_7,
+              Text(
+                'Features of the App:\n',
+                style: TextStyle(
+                    fontSize: AppFontSize.size_12_7,
                     fontWeight: FontWeight.w900),
               ),
               RichText(
                 text: TextSpan(
                   text:
-                  '1. Weight and Height Calculation: \n The app allows you to enter your weight and height to determine your ideal weight. You will receive personalized tips to help you reach your goal.\n2. Water Intake Tracking:\n We understand that drinking enough water is a crucial part of a healthy lifestyle. Therefore, we have developed a reminder feature to help you stay hydrated throughout the day.\n3. Customized Fitness Activities:\n Enjoy a variety of fitness activities that include easy-to-understand animations. These activities are specifically designed for women, making exercise fun and effective.\n4. Cup Tracking: You can track the number of cups you drink daily, helping you monitor your water intake more effectively.\n ',
+                      '1. Weight and Height Calculation: \n The app allows you to enter your weight and height to determine your ideal weight. You will receive personalized tips to help you reach your goal.\n2. Water Intake Tracking:\n We understand that drinking enough water is a crucial part of a healthy lifestyle. Therefore, we have developed a reminder feature to help you stay hydrated throughout the day.\n3. Customized Fitness Activities:\n Enjoy a variety of fitness activities that include easy-to-understand animations. These activities are specifically designed for women, making exercise fun and effective.\n4. Cup Tracking: You can track the number of cups you drink daily, helping you monitor your water intake more effectively.\n ',
                   style: TextStyle(
                       color: AppColor.txtColor666,
                       fontSize: AppFontSize.size_12,
                       fontWeight: FontWeight.w400,
-                      height: AppSizes.height_0_2
-                  ),
+                      height: AppSizes.height_0_2),
                 ),
               ),
               SizedBox(height: AppSizes.height_0_1),
-              Text('Our Vision:\n',
-                style: TextStyle(fontSize: AppFontSize.size_12_7,
+              Text(
+                'Our Vision:\n',
+                style: TextStyle(
+                    fontSize: AppFontSize.size_12_7,
                     fontWeight: FontWeight.w900),
               ),
               RichText(
                 text: TextSpan(
-                  text: 'We aim to be your perfect companion on your journey to health and fitness. We believe that everyone has the ability to achieve their goals, and with our app, you will be on the right path to do so. Our goal is to provide support and encouragement at every step. We are excited to help you improve your health and life.\n ',
+                  text:
+                      'We aim to be your perfect companion on your journey to health and fitness. We believe that everyone has the ability to achieve their goals, and with our app, you will be on the right path to do so. Our goal is to provide support and encouragement at every step. We are excited to help you improve your health and life.\n ',
                   style: TextStyle(
                       color: AppColor.txtColor666,
                       fontSize: AppFontSize.size_12,
                       fontWeight: FontWeight.w400,
-                      height: AppSizes.height_0_2
-                  ),
+                      height: AppSizes.height_0_2),
                 ),
               ),
               Center(
-                child: Text("Join us today and start!",
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: AppFontSize.size_12_7),
+                child: Text(
+                  "Join us today and start!",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: AppFontSize.size_12_7),
                 ),
               ),
               SizedBox(height: AppSizes.height_5),
@@ -119,8 +126,11 @@ class AboutScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    backgroundColor: MaterialStateProperty.all(AppColor.white), // اللون الخلفي
-                    padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 10, horizontal: 20)), // الحشو
+                    backgroundColor: MaterialStateProperty.all(
+                        AppColor.white), // اللون الخلفي
+                    padding: MaterialStateProperty.all(
+                        const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20)), // الحشو
                   ),
                   child: Text(
                     'BACK',

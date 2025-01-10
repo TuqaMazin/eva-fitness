@@ -11,7 +11,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/timezone.dart' as time_zone;
-import 'package:url_launcher/url_launcher.dart';
 import 'package:women_lose_weight_flutter/database/helper/db_helper.dart';
 import 'package:women_lose_weight_flutter/utils/debug.dart';
 
@@ -143,9 +142,6 @@ class Utils {
   static getSelectedPlanImage(planIndex) {
     if (planIndex == 0) {
       return Constant.getAssetImage() + "fitness22.jpg";
-
-
-
     } else {
       return Constant.getAssetImage() + "fitness22.jpg";
     }
@@ -207,7 +203,6 @@ class Utils {
     Get.offAllNamed(AppRoutes.home);
   }
 
-
   static Future<void> setNotificationReminder(
       {List<ReminderTable>? reminderList}) async {
     int notificationId = 100;
@@ -258,7 +253,8 @@ class Utils {
     var msg =
         "Your body needs energy! You haven't exercised in ${intl.DateFormat('EEEE').format(DateTime.now())}!";
     Debug.printLog("scheduledNotification Id --->> $notificationId");
-    Debug.printLog("scheduledNotification Id --->> ${scheduledDate.toString()}");
+    Debug.printLog(
+        "scheduledNotification Id --->> ${scheduledDate.toString()}");
     await flutterLocalNotificationsPlugin.zonedSchedule(
       notificationId,
       titleText,
@@ -338,7 +334,9 @@ class Utils {
           payload: scheduledDate.millisecondsSinceEpoch.toString());
     }
 
-    int interval = 1; /// intervals into the hours
+    int interval = 1;
+
+    /// intervals into the hours
     var notificationId = 1;
     while (startTime.isBefore(endTime)) {
       time_zone.TZDateTime newScheduledDate = startTime;
@@ -526,8 +524,6 @@ class Utils {
   static getCalorieFromSec(int second) {
     return second * Constant.secDurationCal;
   }
-
-
 
   String? encodeQueryParameters(Map<String, String> params) {
     return params.entries

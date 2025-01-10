@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:women_lose_weight_flutter/common/dialog/watch_ad/watch_ad.dart';
 import 'package:women_lose_weight_flutter/database/helper/db_helper.dart';
 import 'package:women_lose_weight_flutter/routes/app_routes.dart';
 import 'package:women_lose_weight_flutter/utils/preference.dart';
@@ -267,8 +266,7 @@ class ExerciseListController extends GetxController
     final Map<String, dynamic> manifestMap = json.decode(manifestContent);
 
     final imagePaths = manifestMap.keys
-        .where((String key) =>
-            key.contains("${exerciseList[index].exPath}/"))
+        .where((String key) => key.contains("${exerciseList[index].exPath}/"))
         .where((String key) => key.contains('.webp'))
         .toList();
 

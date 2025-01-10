@@ -5,8 +5,6 @@ import 'package:women_lose_weight_flutter/ui/exercise_list/controllers/exercise_
 import 'package:women_lose_weight_flutter/utils/constant.dart';
 import 'package:women_lose_weight_flutter/utils/sizer_utils.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-
-import '../../routes/app_routes.dart';
 import '../../utils/color.dart';
 import '../../utils/debug.dart';
 import '../../utils/utils.dart';

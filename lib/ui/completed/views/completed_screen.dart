@@ -3,7 +3,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:women_lose_weight_flutter/routes/app_routes.dart';
 import 'package:women_lose_weight_flutter/ui/completed/controllers/completed_controller.dart';
 import 'package:women_lose_weight_flutter/utils/constant.dart';
 
@@ -16,7 +15,7 @@ class CompletedScreen extends StatelessWidget {
   CompletedScreen({super.key});
 
   final CompletedController _completedController =
-  Get.find<CompletedController>();
+      Get.find<CompletedController>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +43,7 @@ class CompletedScreen extends StatelessWidget {
                     colorFilter: ColorFilter.mode(
                         Colors.black.withOpacity(0.6), BlendMode.dstATop),
                     image:
-                    AssetImage(Constant.getAssetImage() + "splash_bg.webp"),
+                        AssetImage(Constant.getAssetImage() + "splash_bg.webp"),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -219,13 +218,13 @@ class CompletedScreen extends StatelessWidget {
             },
             style: ButtonStyle(
               backgroundColor:
-              WidgetStateProperty.all(AppColor.white.withOpacity(.6)),
+                  WidgetStateProperty.all(AppColor.white.withOpacity(.6)),
               elevation: WidgetStateProperty.all(0),
               shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100.0),
                   side:
-                  const BorderSide(color: AppColor.transparent, width: 0.7),
+                      const BorderSide(color: AppColor.transparent, width: 0.7),
                 ),
               ),
             ),
@@ -257,7 +256,7 @@ class CompletedScreen extends StatelessWidget {
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100.0),
                   side:
-                  const BorderSide(color: AppColor.transparent, width: 0.7),
+                      const BorderSide(color: AppColor.transparent, width: 0.7),
                 ),
               ),
             ),
@@ -375,7 +374,7 @@ class CompletedScreen extends StatelessWidget {
                   maxLength: 5,
                   textInputAction: TextInputAction.done,
                   keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
+                      const TextInputType.numberWithOptions(decimal: true),
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(
                         RegExp(r'^(\d+)?\.?\d{0,1}')),
@@ -501,7 +500,7 @@ class CompletedScreen extends StatelessWidget {
             ),
             child: Theme(
               data:
-              Theme.of(Get.context!).copyWith(dividerColor: AppColor.white),
+                  Theme.of(Get.context!).copyWith(dividerColor: AppColor.white),
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(3)),
                 child: ExpansionTile(
@@ -669,7 +668,7 @@ class CompletedScreen extends StatelessWidget {
                                 showDialog(
                                   context: Get.context!,
                                   builder: (context) =>
-                                  const WeightHeightDialog(),
+                                      const WeightHeightDialog(),
                                 ).then((value) {
                                   logic.getBmiData();
                                   logic.setWeightValues();
@@ -698,7 +697,7 @@ class CompletedScreen extends StatelessWidget {
                                 showDialog(
                                   context: Get.context!,
                                   builder: (context) =>
-                                  const WeightHeightDialog(),
+                                      const WeightHeightDialog(),
                                 ).then((value) {
                                   logic.getBmiData();
                                   logic.setWeightValues();
@@ -793,7 +792,6 @@ class CompletedScreen extends StatelessWidget {
               );
             },
           ),
-
         ],
       ),
     );

@@ -1,18 +1,14 @@
-import 'dart:io';
-import 'dart:ui';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:share_plus/share_plus.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 import 'package:women_lose_weight_flutter/database/helper/firestore_helper.dart';
-import 'package:women_lose_weight_flutter/localization/localizations_delegate.dart';
+
 import 'package:women_lose_weight_flutter/routes/app_routes.dart';
 import 'package:women_lose_weight_flutter/ui/home/controllers/home_controller.dart';
 import 'package:women_lose_weight_flutter/ui/me/views/me_screen.dart';
 import 'package:women_lose_weight_flutter/utils/constant.dart';
-import 'package:women_lose_weight_flutter/utils/debug.dart';
+
 import 'package:women_lose_weight_flutter/utils/preference.dart';
 
 import '../../../database/helper/db_helper.dart';
@@ -25,7 +21,6 @@ class MeController extends GetxController {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-
   final HomeController _homeController = Get.find<HomeController>();
   final PlanController _planController = Get.find<PlanController>();
 
@@ -35,8 +30,6 @@ class MeController extends GetxController {
     getLastSyncDate();
     super.onInit();
   }
-
-
 
   onTurnOnWaterTrackerToggleSwitchChange(bool value) {
     isTurnOnWaterTracker = value;
@@ -58,14 +51,8 @@ class MeController extends GetxController {
         Preference.shared.getBool(Preference.turnOnWaterTracker) ??
             Constant.boolValueTrue;
 
-
-
     _homeController.isPurchase();
   }
-
-
-
-
 
   Future<void> loadPrivacyPolicy() async {
     var url = Uri.parse(Constant.getPrivacyPolicyURL());
@@ -75,10 +62,6 @@ class MeController extends GetxController {
       throw "Cannot load the page";
     }
   }
-
-
-
-
 
   getLastSyncDate() {
     lastSyncDate = Preference.shared.getString(Preference.lastSyncDate) ?? "";

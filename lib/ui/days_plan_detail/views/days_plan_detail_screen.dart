@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,14 +22,14 @@ class DaysPlanDetailScreen extends StatelessWidget {
       backgroundColor: AppColor.txtColorF2F2,
       body: SafeArea(
         top: Constant.boolValueFalse,
-        bottom:
-            Constant.boolValueTrue,
+        bottom: Constant.boolValueTrue,
         child: Column(
           children: [
             Expanded(
               child: NestedScrollView(
                 controller: _daysPlanDetailController.scrollController,
-                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
                   return <Widget>[
                     _sliverAppBarWidget(),
                   ];
@@ -68,8 +66,7 @@ class DaysPlanDetailScreen extends StatelessWidget {
           titleSpacing: AppSizes.width_1_5,
           title: (logic.isShrink)
               ? AutoSizeText(
-                  Utils.getSelectedPlanName(
-                          logic.currentPlanIndex)
+                  Utils.getSelectedPlanName(logic.currentPlanIndex)
                       .toUpperCase(),
                   textAlign: TextAlign.center,
                   maxLines: 1,
@@ -88,7 +85,7 @@ class DaysPlanDetailScreen extends StatelessWidget {
               padding: const EdgeInsets.all(0.0),
               child: Icon(
                 Icons.arrow_back_sharp,
-                color:  AppColor.black,
+                color: AppColor.black,
                 size: AppSizes.height_3,
               ),
             ),
@@ -101,8 +98,8 @@ class DaysPlanDetailScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColor.transparent,
                 image: DecorationImage(
-                  image: AssetImage(Utils.getSelectedPlanImage(
-                      logic.currentPlanIndex)),
+                  image: AssetImage(
+                      Utils.getSelectedPlanImage(logic.currentPlanIndex)),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -111,8 +108,7 @@ class DaysPlanDetailScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AutoSizeText(
-                    Utils.getSelectedPlanName(
-                        logic.currentPlanIndex),
+                    Utils.getSelectedPlanName(logic.currentPlanIndex),
                     maxLines: 1,
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -121,7 +117,9 @@ class DaysPlanDetailScreen extends StatelessWidget {
                       fontSize: AppFontSize.size_17,
                     ),
                   ),
-                  SizedBox(height: 33,),
+                  SizedBox(
+                    height: 33,
+                  ),
                   Container(
                     margin: EdgeInsets.only(bottom: AppSizes.height_4),
                     child: Text(
@@ -163,7 +161,11 @@ class DaysPlanDetailScreen extends StatelessWidget {
   }
 
   _itemWeeksList(int index, List<PWeeklyDayData> pWeeklyDayList) {
-    bool isDoneWeek = pWeeklyDayList[index].arrWeekDayData!.where((element) => element.isCompleted != "1").toList().isEmpty;
+    bool isDoneWeek = pWeeklyDayList[index]
+        .arrWeekDayData!
+        .where((element) => element.isCompleted != "1")
+        .toList()
+        .isEmpty;
     return Column(
       children: [
         Container(
@@ -273,21 +275,22 @@ class DaysPlanDetailScreen extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
-                colors: (_daysPlanDetailController.isWorkoutCompleted(currentItem))
-                    ? [
-                        AppColor.bgCardDaysLight,
-                        AppColor.bgCardDaysLight,
-                      ]
-                    : (_daysPlanDetailController.isWorkoutCompletedNextItem(
-                            parentIndex, childIndex))
+                colors:
+                    (_daysPlanDetailController.isWorkoutCompleted(currentItem))
                         ? [
-                            AppColor.bgCardDays,
-                            AppColor.bgCardDays,
+                            AppColor.bgCardDaysLight,
+                            AppColor.bgCardDaysLight,
                           ]
-                        : [
-                            AppColor.white,
-                            AppColor.white,
-                          ],
+                        : (_daysPlanDetailController.isWorkoutCompletedNextItem(
+                                parentIndex, childIndex))
+                            ? [
+                                AppColor.bgCardDays,
+                                AppColor.bgCardDays,
+                              ]
+                            : [
+                                AppColor.white,
+                                AppColor.white,
+                              ],
               ),
               borderRadius: BorderRadius.circular(10.0),
             ),
@@ -299,8 +302,9 @@ class DaysPlanDetailScreen extends StatelessWidget {
                     style: TextStyle(
                       color: (_daysPlanDetailController
                                   .isWorkoutCompleted(currentItem) ||
-                              _daysPlanDetailController.isWorkoutCompletedNextItem(
-                                  parentIndex, childIndex))
+                              _daysPlanDetailController
+                                  .isWorkoutCompletedNextItem(
+                                      parentIndex, childIndex))
                           ? AppColor.white
                           : AppColor.txtColor999,
                       fontSize: AppFontSize.size_15,
@@ -387,8 +391,9 @@ class DaysPlanDetailScreen extends StatelessWidget {
                           ],
                         ),
                       );
-                    } else if (_daysPlanDetailController.isWorkoutCompletedNextItem(
-                            parentIndex, childIndex) &&
+                    } else if (_daysPlanDetailController
+                            .isWorkoutCompletedNextItem(
+                                parentIndex, childIndex) &&
                         progress == "0" &&
                         !_daysPlanDetailController.isRestDay(currentItem)) {
                       return Container(
@@ -412,7 +417,8 @@ class DaysPlanDetailScreen extends StatelessWidget {
                   },
                 ),
                 if (_daysPlanDetailController.isRestDay(currentItem) &&
-                    !_daysPlanDetailController.isWorkoutCompleted(currentItem)) ...{
+                    !_daysPlanDetailController
+                        .isWorkoutCompleted(currentItem)) ...{
                   Image.asset(
                     Constant.getAssetIcons() + "ic_rest_day_future.webp",
                     width: AppSizes.height_4_5,

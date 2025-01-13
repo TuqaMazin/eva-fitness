@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,12 +17,15 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   late AppSizes appSizes;
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
 
   @override
   void initState() {
     appSizes = AppSizes();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,6 +115,7 @@ class _SignInScreenState extends State<SignInScreen> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(7),
       child: TextFormField(
+        controller: email,
         maxLines: 1,
         textInputAction: TextInputAction.done,
         keyboardType: TextInputType.text,
@@ -144,6 +149,7 @@ class _SignInScreenState extends State<SignInScreen> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(7),
       child: TextFormField(
+        controller: password,
         maxLines: 1,
         textInputAction: TextInputAction.done,
         keyboardType: TextInputType.text,
@@ -176,6 +182,7 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
     );
   }
+
   _signInButton() {
     return Container(
       width: AppSizes.fullWidth,
@@ -192,7 +199,11 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
       child: TextButton(
         onPressed: () {
-          Get.offAllNamed(AppRoutes.home);
+          signInWithEmailAndPassword(
+            email.text,
+            password.text,
+            context,
+          );
         },
         style: ButtonStyle(
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -241,7 +252,7 @@ class _SignInScreenState extends State<SignInScreen> {
   _txtCreateAccount() {
     return Container(
       margin:
-      EdgeInsets.only(top: AppSizes.height_5, bottom: AppSizes.height_3_5),
+          EdgeInsets.only(top: AppSizes.height_5, bottom: AppSizes.height_3_5),
       child: RichText(
         text: TextSpan(
           text: "${'Create Account'}? ",
@@ -264,6 +275,81 @@ class _SignInScreenState extends State<SignInScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+Future<void> signInWithEmailAndPassword(
+  String email,
+  String password,
+  BuildContext context,
+) async {
+  // Show loading indicator
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    },
+  );
+
+  try {
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    User? user = userCredential.user;
+
+    if (user != null) {
+      // Hide the loading indicator
+      Navigator.of(context).pop();
+
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("User signed in successfully."),
+        ),
+      );
+
+      // Redirect to the home page
+      Navigator.pushReplacementNamed(
+        context,
+        AppRoutes.home,
+      );
+    }
+  } on FirebaseAuthException catch (e) {
+    // Hide the loading indicator
+    Navigator.of(context).pop();
+
+    String errorMessage = '';
+    switch (e.code) {
+      case 'user-not-found':
+        errorMessage = "No user found for that email.";
+        break;
+      case 'wrong-password':
+        errorMessage = "Wrong password provided for that user.";
+        break;
+      case 'invalid-email':
+        errorMessage = "The email address is not valid.";
+        break;
+      default:
+        errorMessage = "An error occurred: ${e.message}";
+    }
+
+    // Show error message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(errorMessage)),
+    );
+  } catch (e) {
+    // Hide the loading indicator
+    Navigator.of(context).pop();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("An unexpected error occurred: $e")),
     );
   }
 }

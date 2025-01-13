@@ -3,10 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:women_lose_weight_flutter/routes/app_routes.dart';
 import 'package:women_lose_weight_flutter/utils/color.dart';
 import 'package:women_lose_weight_flutter/utils/sizer_utils.dart';
-
-import '../../../routes/app_routes.dart';
 import '../../../utils/constant.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -25,7 +24,7 @@ class SignUpScreen extends StatelessWidget {
         child: Stack(
           children: [
             _txtSignUpWidget(),
-            _signUpDetailsWidget(),
+            _signUpDetailsWidget(context),
           ],
         ),
       ),
@@ -73,7 +72,7 @@ class SignUpScreen extends StatelessWidget {
     );
   }
 
-  _signUpDetailsWidget() {
+  _signUpDetailsWidget(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: AppColor.white,
@@ -95,7 +94,7 @@ class SignUpScreen extends StatelessWidget {
           SizedBox(height: AppSizes.height_2),
           _passwordTextField(),
           SizedBox(height: AppSizes.height_3),
-          _signUpButton(),
+          _signUpButton(context),
           SizedBox(height: AppSizes.height_3_5),
           _txtPrivacyPolicy(),
           SizedBox(height: AppSizes.height_3_5),
@@ -193,7 +192,7 @@ class SignUpScreen extends StatelessWidget {
           fontWeight: FontWeight.w500,
         ),
         cursorColor: AppColor.primary,
-        obscureText: true, // This line makes the password hidden
+        obscureText: true,
         decoration: InputDecoration(
           hintText: "Password",
           hintStyle: TextStyle(
@@ -217,7 +216,7 @@ class SignUpScreen extends StatelessWidget {
     );
   }
 
-  _signUpButton() {
+  _signUpButton(BuildContext context) {
     return Container(
       width: AppSizes.fullWidth,
       decoration: BoxDecoration(
@@ -233,7 +232,12 @@ class SignUpScreen extends StatelessWidget {
       ),
       child: TextButton(
         onPressed: () {
-          Get.toNamed(AppRoutes.signIn);
+          signUpWithEmailAndPassword(
+            email.text,
+            password.text,
+            fullName.text,
+            context,
+          );
         },
         style: ButtonStyle(
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -247,11 +251,12 @@ class SignUpScreen extends StatelessWidget {
           ),
         ),
         child: GestureDetector(
-          onTap: () async {
+          onTap: () {
             signUpWithEmailAndPassword(
               email.text,
               password.text,
               fullName.text,
+              context,
             );
           },
           child: Container(
@@ -289,7 +294,7 @@ class SignUpScreen extends StatelessWidget {
             ),
             recognizer: TapGestureRecognizer()..onTap = () {},
           ),
-          TextSpan(text: 'and'),
+          const TextSpan(text: 'and'),
           TextSpan(
             text: 'Privacy policy',
             style: const TextStyle(
@@ -332,8 +337,23 @@ class SignUpScreen extends StatelessWidget {
   }
 }
 
-Future<User?> signUpWithEmailAndPassword(
-    String email, String password, String fullName) async {
+Future<void> signUpWithEmailAndPassword(
+  String email,
+  String password,
+  String fullName,
+  BuildContext context,
+) async {
+  // Show loading indicator
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    },
+  );
+
   try {
     UserCredential userCredential =
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -357,12 +377,55 @@ Future<User?> signUpWithEmailAndPassword(
         'createdAt': FieldValue.serverTimestamp(),
       });
 
-      print("User signed up and data stored successfully: ${user.uid}");
+      // Hide the loading indicator
+      Navigator.of(context).pop();
+
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("User signed up successfully."),
+        ),
+      );
+
+      // Redirect to the home page
+      Navigator.pushReplacementNamed(
+        context,
+        AppRoutes.home,
+      );
+    }
+  } on FirebaseAuthException catch (e) {
+    // Hide the loading indicator
+    Navigator.of(context).pop();
+
+    String errorMessage = '';
+    switch (e.code) {
+      case 'email-already-in-use':
+        errorMessage =
+            "The email address is already in use by another account.";
+        break;
+      case 'invalid-email':
+        errorMessage = "The email address is not valid.";
+        break;
+      case 'weak-password':
+        errorMessage = "The password is too weak.";
+        break;
+      case 'operation-not-allowed':
+        errorMessage = "Email/password accounts are not enabled.";
+        break;
+      default:
+        errorMessage = "An error occurred: ${e.message}";
     }
 
-    return user;
+    // Show error message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(errorMessage)),
+    );
   } catch (e) {
-    print("Error signing up: $e");
-    return null;
+    // Hide the loading indicator
+    Navigator.of(context).pop();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("An unexpected error occurred: $e")),
+    );
   }
 }
